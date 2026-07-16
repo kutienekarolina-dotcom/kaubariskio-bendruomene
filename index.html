@@ -63,6 +63,7 @@
         <a href="#galerija">Galerija</a>
         <a href="#dokumentai">Dokumentai</a>
         <a href="#apie-mus">Apie mus</a>
+
         <a href="#kontaktai" class="nav-contact-button">
           Kontaktai
         </a>
@@ -122,12 +123,154 @@
         </div>
 
         <div class="hero-image-wrapper">
+
           <img
             src="images/hero-jonines.jpg"
             alt="Kaubariškio bendruomenės renginio akimirka"
             class="hero-image"
             fetchpriority="high"
           >
+
+          <div
+            class="community-animation-card"
+            aria-hidden="true"
+          >
+
+            <svg
+              class="community-animation"
+              viewBox="0 0 360 190"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+
+              <path
+                class="community-path community-path-one"
+                d="M72 101 C110 45, 164 48, 193 91"
+              />
+
+              <path
+                class="community-path community-path-two"
+                d="M193 91 C228 45, 290 56, 305 105"
+              />
+
+              <path
+                class="community-path community-path-three"
+                d="M72 101 C130 145, 245 148, 305 105"
+              />
+
+              <circle
+                class="community-dot community-dot-one"
+                cx="72"
+                cy="101"
+                r="8"
+              />
+
+              <circle
+                class="community-dot community-dot-two"
+                cx="193"
+                cy="91"
+                r="8"
+              />
+
+              <circle
+                class="community-dot community-dot-three"
+                cx="305"
+                cy="105"
+                r="8"
+              />
+
+              <g class="community-person community-person-one">
+                <circle cx="72" cy="63" r="12" />
+                <path d="M51 101 C51 78, 93 78, 93 101" />
+              </g>
+
+              <g class="community-person community-person-two">
+                <circle cx="193" cy="52" r="12" />
+                <path d="M172 91 C172 68, 214 68, 214 91" />
+              </g>
+
+              <g class="community-person community-person-three">
+                <circle cx="305" cy="67" r="12" />
+                <path d="M284 105 C284 82, 326 82, 326 105" />
+              </g>
+
+              <g class="community-calendar">
+
+                <rect
+                  x="137"
+                  y="116"
+                  width="55"
+                  height="48"
+                  rx="9"
+                />
+
+                <line
+                  x1="137"
+                  y1="132"
+                  x2="192"
+                  y2="132"
+                />
+
+                <line
+                  x1="151"
+                  y1="111"
+                  x2="151"
+                  y2="124"
+                />
+
+                <line
+                  x1="178"
+                  y1="111"
+                  x2="178"
+                  y2="124"
+                />
+
+                <text
+                  x="165"
+                  y="153"
+                  text-anchor="middle"
+                >
+                  17
+                </text>
+
+              </g>
+
+              <g class="community-location">
+
+                <path
+                  d="M240 117
+                     C240 96, 273 96, 273 117
+                     C273 137, 256.5 153, 256.5 153
+                     C256.5 153, 240 137, 240 117"
+                />
+
+                <circle
+                  cx="256.5"
+                  cy="117"
+                  r="6"
+                />
+
+              </g>
+
+              <g class="community-heart">
+
+                <path
+                  d="M180 22
+                     C168 5, 140 13, 140 34
+                     C140 55, 180 74, 180 74
+                     C180 74, 220 55, 220 34
+                     C220 13, 192 5, 180 22"
+                />
+
+              </g>
+
+            </svg>
+
+            <p class="community-animation-text">
+              Kuriame bendruomenę kartu
+            </p>
+
+          </div>
+
         </div>
 
       </div>
@@ -137,6 +280,7 @@
         <article class="featured-event-card">
 
           <div>
+
             <p class="event-label">
               ARTIMIAUSIAS RENGINYS
             </p>
@@ -149,6 +293,7 @@
               <strong>Liepos 17 d. 18.00 val.</strong><br>
               Paplūdimio al. 6, Kaubariškis
             </p>
+
           </div>
 
           <div class="event-card-actions">
@@ -239,29 +384,18 @@
           >
 
             <button
-              class="gallery-item"
+              class="event-poster-button gallery-item"
               type="button"
               aria-label="Atidaryti BagažinTurgio skelbimą"
-              style="
-                width: 100%;
-                margin-bottom: 18px;
-                border-radius: 14px;
-                background: #ffffff;
-              "
             >
+
               <img
                 src="images/bagazinturgis-2026-07-25.png"
                 alt="Kaubariškio BagažinTurgio skelbimas"
+                class="event-poster-image"
                 loading="lazy"
-                style="
-                  width: 100%;
-                  height: 300px;
-                  object-fit: contain;
-                  object-position: center top;
-                  border-radius: 14px;
-                  background: #ffffff;
-                "
               >
+
             </button>
 
             <span class="status-badge">
@@ -415,7 +549,7 @@
           <article class="content-card">
 
             <span class="category-label">
-              KVĖTIMAS
+              KVIETIMAS
             </span>
 
             <h3>
@@ -501,6 +635,7 @@
           <div class="calendar-placeholder">
 
             <div>
+
               <p>
                 <strong>Liepos 17 d. 18.00 val.</strong><br>
                 „Bendrystės lėkštė“ atkeliauja į Kaubariškį
@@ -510,6 +645,7 @@
                 <strong>Liepos 25 d. 10.00–14.00 val.</strong><br>
                 BagažinTurgis Kaubariškyje
               </p>
+
             </div>
 
           </div>
