@@ -1,609 +1,502 @@
 'use strict';
 
-/* =========================================================
-   KAUBARIŠKIO BENDRUOMENĖS SVETAINĖ
-   ========================================================= */
-
 document.addEventListener('DOMContentLoaded', () => {
-  nustatytiMetus();
-  paleistiLietuvosLaikrodi();
-  paleistiSkaitymoProgresa();
-  paleistiGrizimoIVirsuMygtuka();
-  paleistiMobilujiMeniu();
-  paleistiElPastoKopijavima();
-  paleistiNuotraukuGalerija();
-  paleistiBagazinturgioRegistracija();
-  paleistiNarystesParaiska();
-  sutvarkytiTusciasNuorodas();
-});
+  const byId = (id) => document.getElementById(id);
 
+  const year = byId('current-year');
+  if (year) year.textContent = new Date().getFullYear();
 
-/* =========================================================
-   METAI PORAŠTĖJE
-   ========================================================= */
+  const dateEl = byId('current-date');
+  const timeEl = byId('current-time');
 
-function nustatytiMetus() {
-  const metuElementas = document.getElementById('current-year');
+  if (dateEl && timeEl) {
+    const updateClock = () => {
+      const now = new Date();
 
-  if (!metuElementas) {
-    return;
+      const dateText = new Intl.DateTimeFormat('lt-LT', {
+        timeZone: 'Europe/Vilnius',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        weekday: 'long'
+      }).format(now);
+
+      dateEl.textContent =
+        dateText.charAt(0).toUpperCase() + dateText.slice(1);
+
+      timeEl.textContent = new Intl.DateTimeFormat('lt-LT', {
+        timeZone: 'Europe/Vilnius',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      }).format(now);
+    };
+
+    updateClock();
+    setInterval(updateClock, 1000);
   }
 
-  metuElementas.textContent = String(new Date().getFullYear());
-}
+  const progress = byId('reading-progress');
+  const backToTop = byId('back-to-top');
 
-
-/* =========================================================
-   LIETUVOS DATA IR LAIKAS
-   ========================================================= */
-
-function paleistiLietuvosLaikrodi() {
-  const datosElementas = document.getElementById('current-date');
-  const laikoElementas = document.getElementById('current-time');
-
-  if (!datosElementas || !laikoElementas) {
-    return;
-  }
-
-  const atnaujintiLaika = () => {
-    const dabar = new Date();
-
-    const data = new Intl.DateTimeFormat('lt-LT', {
-      timeZone: 'Europe/Vilnius',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      weekday: 'long'
-    }).format(dabar);
-
-    const laikas = new Intl.DateTimeFormat('lt-LT', {
-      timeZone: 'Europe/Vilnius',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit'
-    }).format(dabar);
-
-    datosElementas.textContent =
-      data.charAt(0).toUpperCase() + data.slice(1);
-
-    laikoElementas.textContent = laikas;
-  };
-
-  atnaujintiLaika();
-
-  window.setInterval(atnaujintiLaika, 1000);
-}
-
-
-/* =========================================================
-   SKAITYMO PROGRESO JUOSTA
-   ========================================================= */
-
-function paleistiSkaitymoProgresa() {
-  const progresoJuosta =
-    document.getElementById('reading-progress');
-
-  if (!progresoJuosta) {
-    return;
-  }
-
-  const atnaujintiProgresa = () => {
-    const dokumentoAukstis =
+  const updateScrollUi = () => {
+    const maxScroll =
       document.documentElement.scrollHeight -
       document.documentElement.clientHeight;
 
-    const paslinkta = window.scrollY;
+    if (progress) {
+      const percent =
+        maxScroll > 0
+          ? (window.scrollY / maxScroll) * 100
+          : 0;
 
-    const procentai =
-      dokumentoAukstis > 0
-        ? Math.min(
-            100,
-            Math.max(0, (paslinkta / dokumentoAukstis) * 100)
-          )
-        : 0;
-
-    progresoJuosta.style.width = `${procentai}%`;
-  };
-
-  atnaujintiProgresa();
-
-  window.addEventListener('scroll', atnaujintiProgresa, {
-    passive: true
-  });
-
-  window.addEventListener('resize', atnaujintiProgresa);
-}
-
-
-/* =========================================================
-   GRĮŽIMO Į VIRŠŲ MYGTUKAS
-   ========================================================= */
-
-function paleistiGrizimoIVirsuMygtuka() {
-  const mygtukas = document.getElementById('back-to-top');
-
-  if (!mygtukas) {
-    return;
-  }
-
-  const atnaujintiMygtuka = () => {
-    mygtukas.classList.toggle(
-      'is-visible',
-      window.scrollY > 550
-    );
-  };
-
-  atnaujintiMygtuka();
-
-  window.addEventListener('scroll', atnaujintiMygtuka, {
-    passive: true
-  });
-
-  mygtukas.addEventListener('click', () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  });
-}
-
-
-/* =========================================================
-   MOBILUSIS MENIU
-   ========================================================= */
-
-function paleistiMobilujiMeniu() {
-  const meniuMygtukas =
-    document.getElementById('mobile-menu-button');
-
-  const navigacija =
-    document.getElementById('main-navigation');
-
-  if (!meniuMygtukas || !navigacija) {
-    return;
-  }
-
-  const uzdarytiMeniu = () => {
-    navigacija.classList.remove('is-open');
-    meniuMygtukas.setAttribute('aria-expanded', 'false');
-    meniuMygtukas.textContent = '☰';
-    meniuMygtukas.setAttribute(
-      'aria-label',
-      'Atidaryti meniu'
-    );
-  };
-
-  const atidarytiMeniu = () => {
-    navigacija.classList.add('is-open');
-    meniuMygtukas.setAttribute('aria-expanded', 'true');
-    meniuMygtukas.textContent = '×';
-    meniuMygtukas.setAttribute(
-      'aria-label',
-      'Uždaryti meniu'
-    );
-  };
-
-  meniuMygtukas.addEventListener('click', () => {
-    const meniuAtidarytas =
-      navigacija.classList.contains('is-open');
-
-    if (meniuAtidarytas) {
-      uzdarytiMeniu();
-    } else {
-      atidarytiMeniu();
+      progress.style.width =
+        `${Math.min(100, Math.max(0, percent))}%`;
     }
-  });
 
-  navigacija.querySelectorAll('a').forEach((nuoroda) => {
-    nuoroda.addEventListener('click', uzdarytiMeniu);
-  });
+    if (backToTop) {
+      backToTop.classList.toggle(
+        'is-visible',
+        window.scrollY > 550
+      );
+    }
+  };
 
-  document.addEventListener('click', (ivykis) => {
-    const paspaustaMeniuViduje =
-      navigacija.contains(ivykis.target);
+  updateScrollUi();
 
-    const paspaustasMeniuMygtukas =
-      meniuMygtukas.contains(ivykis.target);
+  window.addEventListener(
+    'scroll',
+    updateScrollUi,
+    { passive: true }
+  );
+
+  window.addEventListener(
+    'resize',
+    updateScrollUi
+  );
+
+  if (backToTop) {
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  }
+
+  const menuButton =
+    byId('mobile-menu-button');
+
+  const navigation =
+    byId('main-navigation');
+
+  if (menuButton && navigation) {
+    const closeMenu = () => {
+      navigation.classList.remove('is-open');
+
+      menuButton.setAttribute(
+        'aria-expanded',
+        'false'
+      );
+
+      menuButton.setAttribute(
+        'aria-label',
+        'Atidaryti meniu'
+      );
+
+      menuButton.textContent = '☰';
+    };
+
+    menuButton.addEventListener('click', () => {
+      const open =
+        navigation.classList.toggle('is-open');
+
+      menuButton.setAttribute(
+        'aria-expanded',
+        String(open)
+      );
+
+      menuButton.setAttribute(
+        'aria-label',
+        open
+          ? 'Uždaryti meniu'
+          : 'Atidaryti meniu'
+      );
+
+      menuButton.textContent =
+        open ? '×' : '☰';
+    });
+
+    navigation
+      .querySelectorAll('a')
+      .forEach((link) => {
+        link.addEventListener(
+          'click',
+          closeMenu
+        );
+      });
+
+    document.addEventListener(
+      'click',
+      (event) => {
+        const clickedInsideNavigation =
+          navigation.contains(event.target);
+
+        const clickedMenuButton =
+          menuButton.contains(event.target);
+
+        if (
+          !clickedInsideNavigation &&
+          !clickedMenuButton
+        ) {
+          closeMenu();
+        }
+      }
+    );
+
+    document.addEventListener(
+      'keydown',
+      (event) => {
+        if (event.key === 'Escape') {
+          closeMenu();
+        }
+      }
+    );
+
+    window.addEventListener(
+      'resize',
+      () => {
+        if (window.innerWidth > 1120) {
+          closeMenu();
+        }
+      }
+    );
+  }
+
+  const copyButton =
+    byId('copy-email-button');
+
+  const copyMessage =
+    byId('copy-confirmation');
+
+  if (copyButton) {
+    copyButton.addEventListener(
+      'click',
+      async () => {
+        const email =
+          'kaubariskiobendruomene@gmail.com';
+
+        try {
+          if (
+            navigator.clipboard &&
+            window.isSecureContext
+          ) {
+            await navigator.clipboard.writeText(
+              email
+            );
+          } else {
+            const field =
+              document.createElement('textarea');
+
+            field.value = email;
+            field.style.position = 'fixed';
+            field.style.left = '-9999px';
+
+            document.body.appendChild(field);
+
+            field.select();
+            document.execCommand('copy');
+
+            field.remove();
+          }
+
+          if (copyMessage) {
+            copyMessage.textContent =
+              'El. pašto adresas nukopijuotas.';
+          }
+        } catch (error) {
+          console.error(error);
+
+          if (copyMessage) {
+            copyMessage.textContent =
+              `El. paštas: ${email}`;
+          }
+        }
+
+        setTimeout(() => {
+          if (copyMessage) {
+            copyMessage.textContent = '';
+          }
+        }, 4000);
+      }
+    );
+  }
+
+  const lightbox =
+    byId('image-lightbox');
+
+  const lightboxImage =
+    byId('lightbox-image');
+
+  const closeLightbox =
+    byId('close-lightbox');
+
+  if (
+    lightbox &&
+    lightboxImage &&
+    closeLightbox
+  ) {
+    const close = () => {
+      lightbox.hidden = true;
+
+      document.body.style.overflow = '';
+
+      lightboxImage.src = '';
+    };
+
+    document
+      .querySelectorAll('.gallery-item img')
+      .forEach((image) => {
+        const button =
+          image.closest('.gallery-item');
+
+        if (!button) {
+          return;
+        }
+
+        button.addEventListener(
+          'click',
+          () => {
+            lightboxImage.src =
+              image.currentSrc || image.src;
+
+            lightboxImage.alt =
+              image.alt ||
+              'Padidinta nuotrauka';
+
+            lightbox.hidden = false;
+
+            document.body.style.overflow =
+              'hidden';
+
+            closeLightbox.focus();
+          }
+        );
+      });
+
+    closeLightbox.addEventListener(
+      'click',
+      close
+    );
+
+    lightbox.addEventListener(
+      'click',
+      (event) => {
+        if (event.target === lightbox) {
+          close();
+        }
+      }
+    );
+
+    document.addEventListener(
+      'keydown',
+      (event) => {
+        if (
+          event.key === 'Escape' &&
+          !lightbox.hidden
+        ) {
+          close();
+        }
+      }
+    );
+  }
+
+  const setupForm = ({
+    formId,
+    frameId,
+    buttonId,
+    messageId,
+    sendingText,
+    successText
+  }) => {
+    const form = byId(formId);
+    const frame = byId(frameId);
+    const button = byId(buttonId);
+    const message = byId(messageId);
 
     if (
-      !paspaustaMeniuViduje &&
-      !paspaustasMeniuMygtukas
+      !form ||
+      !frame ||
+      !button ||
+      !message
     ) {
-      uzdarytiMeniu();
+      return;
     }
-  });
 
-  document.addEventListener('keydown', (ivykis) => {
-    if (ivykis.key === 'Escape') {
-      uzdarytiMeniu();
-    }
-  });
+    let sending = false;
+    let timer = null;
 
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 1120) {
-      uzdarytiMeniu();
-    }
-  });
-}
+    const originalButtonText =
+      button.textContent.trim();
 
+    const showMessage = (
+      text,
+      className
+    ) => {
+      message.textContent = text;
 
-/* =========================================================
-   EL. PAŠTO KOPIJAVIMAS
-   ========================================================= */
+      message.classList.remove(
+        'is-loading',
+        'is-success',
+        'is-error'
+      );
 
-function paleistiElPastoKopijavima() {
-  const kopijavimoMygtukas =
-    document.getElementById('copy-email-button');
+      if (className) {
+        message.classList.add(className);
+      }
+    };
 
-  const patvirtinimoElementas =
-    document.getElementById('copy-confirmation');
+    const finish = () => {
+      sending = false;
 
-  if (!kopijavimoMygtukas) {
-    return;
-  }
+      button.disabled = false;
 
-  const elPastas =
-    'kaubariskiobendruomene@gmail.com';
+      button.textContent =
+        originalButtonText;
 
-  kopijavimoMygtukas.addEventListener(
-    'click',
-    async () => {
-      try {
-        await nukopijuotiTeksta(elPastas);
+      if (timer) {
+        clearTimeout(timer);
+      }
 
-        if (patvirtinimoElementas) {
-          patvirtinimoElementas.textContent =
-            'El. pašto adresas nukopijuotas.';
+      timer = null;
+    };
+
+    form.addEventListener(
+      'submit',
+      (event) => {
+        if (sending) {
+          event.preventDefault();
+          return;
         }
-      } catch (klaida) {
-        console.error(
-          'Nepavyko nukopijuoti el. pašto:',
-          klaida
+
+        if (!form.checkValidity()) {
+          event.preventDefault();
+
+          form.reportValidity();
+
+          return;
+        }
+
+        if (!navigator.onLine) {
+          event.preventDefault();
+
+          showMessage(
+            'Nėra interneto ryšio. Patikrinkite ryšį ir bandykite dar kartą.',
+            'is-error'
+          );
+
+          return;
+        }
+
+        sending = true;
+
+        button.disabled = true;
+
+        button.textContent =
+          sendingText;
+
+        showMessage(
+          'Duomenys siunčiami. Prašome palaukti…',
+          'is-loading'
         );
 
-        if (patvirtinimoElementas) {
-          patvirtinimoElementas.textContent =
-            `El. paštas: ${elPastas}`;
-        }
+        timer = setTimeout(() => {
+          if (!sending) {
+            return;
+          }
+
+          finish();
+
+          showMessage(
+            'Atsakymo iš sistemos negauta. Patikrinkite interneto ryšį ir pabandykite dar kartą.',
+            'is-error'
+          );
+        }, 30000);
       }
+    );
 
-      window.setTimeout(() => {
-        if (patvirtinimoElementas) {
-          patvirtinimoElementas.textContent = '';
+    frame.addEventListener(
+      'load',
+      () => {
+        if (!sending) {
+          return;
         }
-      }, 4000);
-    }
-  );
-}
 
-async function nukopijuotiTeksta(tekstas) {
-  if (
-    navigator.clipboard &&
-    window.isSecureContext
-  ) {
-    await navigator.clipboard.writeText(tekstas);
-    return;
-  }
+        finish();
 
-  const laikinasLaukas =
-    document.createElement('textarea');
+        form.reset();
 
-  laikinasLaukas.value = tekstas;
-  laikinasLaukas.setAttribute('readonly', '');
-  laikinasLaukas.style.position = 'fixed';
-  laikinasLaukas.style.left = '-9999px';
+        showMessage(
+          successText,
+          'is-success'
+        );
 
-  document.body.appendChild(laikinasLaukas);
-
-  laikinasLaukas.select();
-  laikinasLaukas.setSelectionRange(
-    0,
-    laikinasLaukas.value.length
-  );
-
-  const pavyko = document.execCommand('copy');
-
-  laikinasLaukas.remove();
-
-  if (!pavyko) {
-    throw new Error('Kopijavimo funkcija nepasiekiama.');
-  }
-}
-
-
-/* =========================================================
-   NUOTRAUKŲ GALERIJA
-   ========================================================= */
-
-function paleistiNuotraukuGalerija() {
-  const galerijosElementai =
-    document.querySelectorAll('.gallery-item img');
-
-  const langas =
-    document.getElementById('image-lightbox');
-
-  const padidintaNuotrauka =
-    document.getElementById('lightbox-image');
-
-  const uzdarymoMygtukas =
-    document.getElementById('close-lightbox');
-
-  if (
-    galerijosElementai.length === 0 ||
-    !langas ||
-    !padidintaNuotrauka ||
-    !uzdarymoMygtukas
-  ) {
-    return;
-  }
-
-  let ankstesnisFokusoElementas = null;
-
-  const atidarytiNuotrauka = (nuotrauka) => {
-    ankstesnisFokusoElementas =
-      document.activeElement;
-
-    padidintaNuotrauka.src =
-      nuotrauka.currentSrc || nuotrauka.src;
-
-    padidintaNuotrauka.alt =
-      nuotrauka.alt || 'Padidinta nuotrauka';
-
-    langas.hidden = false;
-    document.body.style.overflow = 'hidden';
-
-    uzdarymoMygtukas.focus();
+        message.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest'
+        });
+      }
+    );
   };
 
-  const uzdarytiNuotrauka = () => {
-    langas.hidden = true;
-    document.body.style.overflow = '';
+  setupForm({
+    formId:
+      'bagazinturgio-registration-form',
 
-    padidintaNuotrauka.src = '';
-    padidintaNuotrauka.alt = '';
+    frameId:
+      'registration-response-frame',
 
-    if (
-      ankstesnisFokusoElementas &&
-      typeof ankstesnisFokusoElementas.focus ===
-        'function'
-    ) {
-      ankstesnisFokusoElementas.focus();
-    }
-  };
+    buttonId:
+      'registration-submit-button',
 
-  galerijosElementai.forEach((nuotrauka) => {
-    const mygtukas =
-      nuotrauka.closest('.gallery-item');
+    messageId:
+      'registration-form-message',
 
-    if (!mygtukas) {
-      return;
-    }
+    sendingText:
+      'Registracija siunčiama…',
 
-    mygtukas.addEventListener('click', () => {
-      atidarytiNuotrauka(nuotrauka);
-    });
-  });
-
-  uzdarymoMygtukas.addEventListener(
-    'click',
-    uzdarytiNuotrauka
-  );
-
-  langas.addEventListener('click', (ivykis) => {
-    if (ivykis.target === langas) {
-      uzdarytiNuotrauka();
-    }
-  });
-
-  document.addEventListener('keydown', (ivykis) => {
-    if (
-      ivykis.key === 'Escape' &&
-      !langas.hidden
-    ) {
-      uzdarytiNuotrauka();
-    }
-  });
-}
-
-
-/* =========================================================
-   BAGAŽINTURGIO REGISTRACIJA
-   ========================================================= */
-
-function paleistiBagazinturgioRegistracija() {
-  paleistiSiunciamaForma({
-    formosId: 'bagazinturgio-registration-form',
-    iframeId: 'registration-response-frame',
-    mygtukoId: 'registration-submit-button',
-    zinutesId: 'registration-form-message',
-    siuntimoTekstas: 'Registracija siunčiama…',
-    sekmesTekstas:
+    successText:
       'Registracija sėkmingai pateikta. Duomenys perduoti renginio organizatorei.'
   });
-}
 
+  setupForm({
+    formId:
+      'membership-application-form',
 
-/* =========================================================
-   BENDRUOMENĖS NARYSTĖS PARAIŠKA
-   ========================================================= */
+    frameId:
+      'membership-response-frame',
 
-function paleistiNarystesParaiska() {
-  paleistiSiunciamaForma({
-    formosId: 'membership-application-form',
-    iframeId: 'membership-response-frame',
-    mygtukoId: 'membership-submit-button',
-    zinutesId: 'membership-form-message',
-    siuntimoTekstas: 'Paraiška siunčiama…',
-    sekmesTekstas:
+    buttonId:
+      'membership-submit-button',
+
+    messageId:
+      'membership-form-message',
+
+    sendingText:
+      'Paraiška siunčiama…',
+
+    successText:
       'Jūsų paraiška gauta. Bendruomenės atstovai su jumis susisieks ir pateiks pasirašyti oficialų narystės prašymą.'
   });
-}
 
-
-/* =========================================================
-   BENDRA FORMŲ SIUNTIMO FUNKCIJA
-   ========================================================= */
-
-function paleistiSiunciamaForma(nustatymai) {
-  const forma =
-    document.getElementById(nustatymai.formosId);
-
-  const atsakymoLangas =
-    document.getElementById(nustatymai.iframeId);
-
-  const pateikimoMygtukas =
-    document.getElementById(nustatymai.mygtukoId);
-
-  const zinutesElementas =
-    document.getElementById(nustatymai.zinutesId);
-
-  if (
-    !forma ||
-    !atsakymoLangas ||
-    !pateikimoMygtukas ||
-    !zinutesElementas
-  ) {
-    return;
-  }
-
-  let siuntimasVyksta = false;
-  let laukimoLaikmatis = null;
-
-  const pradinisMygtukoTekstas =
-    pateikimoMygtukas.textContent.trim();
-
-  const rodytiZinute = (tekstas, busena) => {
-    zinutesElementas.textContent = tekstas;
-
-    zinutesElementas.classList.remove(
-      'is-loading',
-      'is-success',
-      'is-error'
-    );
-
-    if (busena) {
-      zinutesElementas.classList.add(busena);
-    }
-  };
-
-  const ijungtiMygtuka = () => {
-    pateikimoMygtukas.disabled = false;
-    pateikimoMygtukas.textContent =
-      pradinisMygtukoTekstas;
-  };
-
-  const isjungtiMygtuka = () => {
-    pateikimoMygtukas.disabled = true;
-    pateikimoMygtukas.textContent =
-      nustatymai.siuntimoTekstas;
-  };
-
-  forma.addEventListener('submit', (ivykis) => {
-    if (siuntimasVyksta) {
-      ivykis.preventDefault();
-      return;
-    }
-
-    if (!forma.checkValidity()) {
-      return;
-    }
-
-    if (!navigator.onLine) {
-      ivykis.preventDefault();
-
-      rodytiZinute(
-        'Nėra interneto ryšio. Patikrinkite ryšį ir bandykite dar kartą.',
-        'is-error'
+  document
+    .querySelectorAll('a[href="#"]')
+    .forEach((link) => {
+      link.addEventListener(
+        'click',
+        (event) => {
+          event.preventDefault();
+        }
       );
-
-      return;
-    }
-
-    siuntimasVyksta = true;
-
-    isjungtiMygtuka();
-
-    rodytiZinute(
-      'Duomenys siunčiami. Prašome palaukti…',
-      'is-loading'
-    );
-
-    laukimoLaikmatis = window.setTimeout(() => {
-      if (!siuntimasVyksta) {
-        return;
-      }
-
-      siuntimasVyksta = false;
-
-      ijungtiMygtuka();
-
-      rodytiZinute(
-        'Atsakymo iš sistemos negauta. Patikrinkite interneto ryšį ir pabandykite dar kartą.',
-        'is-error'
-      );
-    }, 30000);
-  });
-
-  atsakymoLangas.addEventListener('load', () => {
-    /*
-     * Paslėptas langas gali būti įkeltas ir prieš
-     * pateikiant formą, todėl tikriname, ar siuntimas vyko.
-     */
-    if (!siuntimasVyksta) {
-      return;
-    }
-
-    siuntimasVyksta = false;
-
-    if (laukimoLaikmatis) {
-      window.clearTimeout(laukimoLaikmatis);
-      laukimoLaikmatis = null;
-    }
-
-    ijungtiMygtuka();
-
-    forma.reset();
-
-    rodytiZinute(
-      nustatymai.sekmesTekstas,
-      'is-success'
-    );
-
-    zinutesElementas.scrollIntoView({
-      behavior: 'smooth',
-      block: 'nearest'
     });
-  });
-
-  forma.addEventListener('input', () => {
-    if (
-      zinutesElementas.classList.contains('is-error')
-    ) {
-      rodytiZinute('', '');
-    }
-  });
-
-  forma.addEventListener('change', () => {
-    if (
-      zinutesElementas.classList.contains('is-error')
-    ) {
-      rodytiZinute('', '');
-    }
-  });
-}
-
-
-/* =========================================================
-   TUŠČIOS PAVYZDINĖS NUORODOS
-   ========================================================= */
-
-function sutvarkytiTusciasNuorodas() {
-  const tusciosNuorodos =
-    document.querySelectorAll('a[href="#"]');
-
-  tusciosNuorodos.forEach((nuoroda) => {
-    nuoroda.addEventListener('click', (ivykis) => {
-      ivykis.preventDefault();
-    });
-  });
-}
+});
