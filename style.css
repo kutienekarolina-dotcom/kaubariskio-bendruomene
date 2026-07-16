@@ -117,7 +117,7 @@ a:focus-visible {
 
 .header-inner {
   display: flex;
-  min-height: 84px;
+  min-height: 100px;
   align-items: center;
   justify-content: space-between;
   gap: 30px;
@@ -130,8 +130,9 @@ a:focus-visible {
 }
 
 .main-logo {
-  width: 230px;
-  max-height: 62px;
+  width: 380px;
+  max-width: 34vw;
+  max-height: 92px;
   object-fit: contain;
 }
 
@@ -583,20 +584,33 @@ a:focus-visible {
 
 .about-logo-wrapper {
   display: flex;
-  min-height: 300px;
+  min-height: 340px;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 34px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  gap: 20px;
+  padding: 38px;
   border-radius: var(--radius-large);
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--white);
+  box-shadow: var(--shadow);
 }
 
 .about-logo {
-  max-width: 260px;
-  max-height: 260px;
+  width: 220px;
+  max-width: 80%;
+  max-height: 220px;
   object-fit: contain;
 }
+
+.about-logo-text {
+  margin: 0 !important;
+  color: var(--green-dark) !important;
+  font-size: 1.3rem;
+  font-weight: 850;
+  line-height: 1.25;
+  text-align: center;
+}
+
 /* 1,2 % GPM paramos skiltis */
 
 .support-section {
@@ -713,6 +727,7 @@ a:focus-visible {
   color: #ead5a4;
   font-weight: 900;
 }
+
 /* Galerija */
 
 .gallery-grid {
@@ -999,8 +1014,9 @@ a:focus-visible {
   }
 
   .main-logo {
-    width: 190px;
-    max-width: 72vw;
+    width: 260px;
+    max-width: 78vw;
+    max-height: 76px;
   }
 
   .section {
@@ -1080,7 +1096,17 @@ a:focus-visible {
   }
 
   .about-logo-wrapper {
-    min-height: 240px;
+    min-height: 290px;
+    padding: 28px 22px;
+  }
+
+  .about-logo {
+    width: 180px;
+    max-height: 180px;
+  }
+
+  .about-logo-text {
+    font-size: 1.15rem;
   }
 
   .gallery-grid {
