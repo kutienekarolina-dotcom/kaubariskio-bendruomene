@@ -12,7 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
   paleistiMobilujiMeniu();
   paleistiElPastoKopijavima();
   paleistiNuotraukuGalerija();
-  paleistiRegistracijosForma();
+  paleistiBagazinturgioRegistracija();
+  paleistiNarystesParaiska();
   sutvarkytiTusciasNuorodas();
 });
 
@@ -300,8 +301,7 @@ async function nukopijuotiTeksta(tekstas) {
     laikinasLaukas.value.length
   );
 
-  const pavyko =
-    document.execCommand('copy');
+  const pavyko = document.execCommand('copy');
 
   laikinasLaukas.remove();
 
@@ -407,29 +407,55 @@ function paleistiNuotraukuGalerija() {
 
 
 /* =========================================================
-   BAGAŽINTURGIO REGISTRACIJOS FORMA
+   BAGAŽINTURGIO REGISTRACIJA
    ========================================================= */
 
-function paleistiRegistracijosForma() {
+function paleistiBagazinturgioRegistracija() {
+  paleistiSiunciamaForma({
+    formosId: 'bagazinturgio-registration-form',
+    iframeId: 'registration-response-frame',
+    mygtukoId: 'registration-submit-button',
+    zinutesId: 'registration-form-message',
+    siuntimoTekstas: 'Registracija siunčiama…',
+    sekmesTekstas:
+      'Registracija sėkmingai pateikta. Duomenys perduoti renginio organizatorei.'
+  });
+}
+
+
+/* =========================================================
+   BENDRUOMENĖS NARYSTĖS PARAIŠKA
+   ========================================================= */
+
+function paleistiNarystesParaiska() {
+  paleistiSiunciamaForma({
+    formosId: 'membership-application-form',
+    iframeId: 'membership-response-frame',
+    mygtukoId: 'membership-submit-button',
+    zinutesId: 'membership-form-message',
+    siuntimoTekstas: 'Paraiška siunčiama…',
+    sekmesTekstas:
+      'Jūsų paraiška gauta. Bendruomenės atstovai su jumis susisieks ir pateiks pasirašyti oficialų narystės prašymą.'
+  });
+}
+
+
+/* =========================================================
+   BENDRA FORMŲ SIUNTIMO FUNKCIJA
+   ========================================================= */
+
+function paleistiSiunciamaForma(nustatymai) {
   const forma =
-    document.getElementById(
-      'bagazinturgio-registration-form'
-    );
+    document.getElementById(nustatymai.formosId);
 
   const atsakymoLangas =
-    document.getElementById(
-      'registration-response-frame'
-    );
+    document.getElementById(nustatymai.iframeId);
 
   const pateikimoMygtukas =
-    document.getElementById(
-      'registration-submit-button'
-    );
+    document.getElementById(nustatymai.mygtukoId);
 
   const zinutesElementas =
-    document.getElementById(
-      'registration-form-message'
-    );
+    document.getElementById(nustatymai.zinutesId);
 
   if (
     !forma ||
@@ -469,7 +495,7 @@ function paleistiRegistracijosForma() {
   const isjungtiMygtuka = () => {
     pateikimoMygtukas.disabled = true;
     pateikimoMygtukas.textContent =
-      'Registracija siunčiama…';
+      nustatymai.siuntimoTekstas;
   };
 
   forma.addEventListener('submit', (ivykis) => {
@@ -498,7 +524,7 @@ function paleistiRegistracijosForma() {
     isjungtiMygtuka();
 
     rodytiZinute(
-      'Registracija siunčiama. Prašome palaukti…',
+      'Duomenys siunčiami. Prašome palaukti…',
       'is-loading'
     );
 
@@ -512,7 +538,7 @@ function paleistiRegistracijosForma() {
       ijungtiMygtuka();
 
       rodytiZinute(
-        'Atsakymo iš registracijos sistemos negauta. Patikrinkite interneto ryšį ir pabandykite dar kartą.',
+        'Atsakymo iš sistemos negauta. Patikrinkite interneto ryšį ir pabandykite dar kartą.',
         'is-error'
       );
     }, 30000);
@@ -520,9 +546,8 @@ function paleistiRegistracijosForma() {
 
   atsakymoLangas.addEventListener('load', () => {
     /*
-     * Iframe įkeliamas ir atidarius puslapį.
-     * Todėl patvirtinimą rodome tik tada,
-     * kai tikrai buvo pradėtas formos siuntimas.
+     * Paslėptas langas gali būti įkeltas ir prieš
+     * pateikiant formą, todėl tikriname, ar siuntimas vyko.
      */
     if (!siuntimasVyksta) {
       return;
@@ -540,7 +565,7 @@ function paleistiRegistracijosForma() {
     forma.reset();
 
     rodytiZinute(
-      'Registracija sėkmingai pateikta. Duomenys perduoti renginio organizatorei.',
+      nustatymai.sekmesTekstas,
       'is-success'
     );
 
@@ -552,9 +577,15 @@ function paleistiRegistracijosForma() {
 
   forma.addEventListener('input', () => {
     if (
-      zinutesElementas.classList.contains(
-        'is-error'
-      )
+      zinutesElementas.classList.contains('is-error')
+    ) {
+      rodytiZinute('', '');
+    }
+  });
+
+  forma.addEventListener('change', () => {
+    if (
+      zinutesElementas.classList.contains('is-error')
     ) {
       rodytiZinute('', '');
     }
