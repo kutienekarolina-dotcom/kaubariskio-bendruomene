@@ -10,7 +10,7 @@
 
   <meta
     name="description"
-    content="Kaubariškio bendruomenės renginiai, naujienos, skelbimai, dokumentai ir kontaktinė informacija."
+    content="Kaubariškio bendruomenės renginiai, naujienos, narystė, skelbimai, dokumentai ir kontaktinė informacija."
   >
 
   <title>Kaubariškio bendruomenė</title>
@@ -63,6 +63,7 @@
         <a href="#galerija">Galerija</a>
         <a href="#dokumentai">Dokumentai</a>
         <a href="#apie-mus">Apie mus</a>
+        <a href="#naryste">Narystė</a>
 
         <a href="#kontaktai" class="nav-contact-button">
           Kontaktai
@@ -504,9 +505,7 @@
               </h3>
 
               <ul>
-                <li>
-                  Dalyvavimas nemokamas.
-                </li>
+                <li>Dalyvavimas nemokamas.</li>
 
                 <li>
                   Automobilius prašome statyti tvarkingai ir netrukdyti
@@ -524,7 +523,6 @@
                 <li>
                   Rekomenduojama turėti stalelį arba patiesalą daiktams.
                 </li>
-
               </ul>
 
             </div>
@@ -888,6 +886,17 @@
             </strong>
           </p>
 
+          <div class="hero-buttons">
+
+            <a
+              class="button button-secondary"
+              href="#naryste"
+            >
+              Tapkite bendruomenės nariu
+            </a>
+
+          </div>
+
         </div>
 
         <div class="about-logo-wrapper">
@@ -902,6 +911,294 @@
           <p class="about-logo-text">
             Kaubariškio bendruomenė
           </p>
+
+        </div>
+
+      </div>
+    </section>
+
+    <section
+      id="naryste"
+      class="section registration-section"
+    >
+      <div class="container">
+
+        <div class="registration-layout">
+
+          <div class="registration-information">
+
+            <p class="eyebrow">
+              Prisijunkite prie bendruomenės
+            </p>
+
+            <h2>
+              Tapkite Kaubariškio bendruomenės nariu
+            </h2>
+
+            <p class="registration-intro">
+              Užpildykite preliminarią narystės paraišką.
+              Gavę jūsų kontaktus, bendruomenės atstovai su jumis
+              susisieks ir pateiks pasirašyti oficialų prašymą tapti
+              bendruomenės nariu.
+            </p>
+
+            <div class="registration-event-details">
+
+              <p>
+                <strong>1 žingsnis</strong><br>
+                Užpildykite internetinę paraišką
+              </p>
+
+              <p>
+                <strong>2 žingsnis</strong><br>
+                Bendruomenė su jumis susisieks
+              </p>
+
+              <p>
+                <strong>3 žingsnis</strong><br>
+                Pasirašysite oficialų prašymą
+              </p>
+
+              <p>
+                <strong>4 žingsnis</strong><br>
+                Prašymas bus nagrinėjamas nustatyta tvarka
+              </p>
+
+            </div>
+
+            <div class="registration-rules">
+
+              <h3>
+                Svarbu žinoti
+              </h3>
+
+              <ul>
+                <li>
+                  Internetinė paraiška yra preliminari.
+                </li>
+
+                <li>
+                  Vien jos pateikimas dar nesuteikia bendruomenės
+                  nario statuso.
+                </li>
+
+                <li>
+                  Oficialiam prašymui reikalingas pareiškėjo parašas.
+                </li>
+
+                <li>
+                  Narystė patvirtinama pagal bendruomenės nustatytą
+                  tvarką.
+                </li>
+
+                <li>
+                  Asmens kodo ar dokumentų kopijų internetinėje
+                  formoje neprašome.
+                </li>
+              </ul>
+
+            </div>
+
+          </div>
+
+          <div class="registration-form-card">
+
+            <h3>
+              Preliminari narystės paraiška
+            </h3>
+
+            <p class="form-required-note">
+              Žvaigždute pažymėtus laukus būtina užpildyti.
+            </p>
+
+            <form
+              id="membership-application-form"
+              class="registration-form"
+              action="https://script.google.com/macros/s/AKfycbwAry5_CyU6MDb9YIph6MKx4KfWBD9jYofaiEfXxWApNXU2LtjWSBgXM3QJx8KNvH-b/exec"
+              method="POST"
+              target="membership-response-frame"
+            >
+
+              <div class="form-field">
+
+                <label for="membership-name">
+                  Vardas ir pavardė *
+                </label>
+
+                <input
+                  id="membership-name"
+                  name="vardas"
+                  type="text"
+                  autocomplete="name"
+                  required
+                  maxlength="120"
+                  placeholder="Pavyzdžiui, Vardenis Pavardenis"
+                >
+
+              </div>
+
+              <div class="form-field">
+
+                <label for="membership-phone">
+                  Telefono numeris *
+                </label>
+
+                <input
+                  id="membership-phone"
+                  name="telefonas"
+                  type="tel"
+                  autocomplete="tel"
+                  required
+                  maxlength="40"
+                  placeholder="+370..."
+                >
+
+              </div>
+
+              <div class="form-field">
+
+                <label for="membership-email">
+                  El. paštas
+                </label>
+
+                <input
+                  id="membership-email"
+                  name="el_pastas"
+                  type="email"
+                  autocomplete="email"
+                  maxlength="160"
+                  placeholder="El. paštas neprivalomas"
+                >
+
+              </div>
+
+              <div class="form-field">
+
+                <label for="membership-relation">
+                  Gyvenamoji vieta arba ryšys su Kaubariškiu *
+                </label>
+
+                <textarea
+                  id="membership-relation"
+                  name="rysys"
+                  required
+                  maxlength="1000"
+                  rows="4"
+                  placeholder="Trumpai parašykite, kur gyvenate arba koks jūsų ryšys su Kaubariškiu"
+                ></textarea>
+
+              </div>
+
+              <div class="form-field">
+
+                <label for="membership-contact-method">
+                  Pageidaujamas susisiekimo būdas *
+                </label>
+
+                <select
+                  id="membership-contact-method"
+                  name="susisiekimas"
+                  required
+                >
+                  <option value="">
+                    Pasirinkite
+                  </option>
+
+                  <option value="Telefonu">
+                    Telefonu
+                  </option>
+
+                  <option value="SMS žinute">
+                    SMS žinute
+                  </option>
+
+                  <option value="El. paštu">
+                    El. paštu
+                  </option>
+                </select>
+
+              </div>
+
+              <div class="form-field">
+
+                <label for="membership-notes">
+                  Papildoma informacija
+                </label>
+
+                <textarea
+                  id="membership-notes"
+                  name="pastabos"
+                  maxlength="1000"
+                  rows="4"
+                  placeholder="Klausimai ar kita bendruomenei svarbi informacija"
+                ></textarea>
+
+              </div>
+
+              <div class="form-honeypot" aria-hidden="true">
+
+                <label for="membership-website">
+                  Interneto svetainė
+                </label>
+
+                <input
+                  id="membership-website"
+                  name="website"
+                  type="text"
+                  tabindex="-1"
+                  autocomplete="off"
+                >
+
+              </div>
+
+              <label class="form-consent">
+
+                <input
+                  id="membership-consent"
+                  name="sutikimas"
+                  type="checkbox"
+                  value="taip"
+                  required
+                >
+
+                <span>
+                  Sutinku, kad mano pateikti duomenys būtų naudojami
+                  susisiekti su manimi dėl narystės Kaubariškio
+                  bendruomenėje. *
+                </span>
+
+              </label>
+
+              <p class="form-privacy-note">
+                Pateikti duomenys nebus viešai skelbiami. Jie bus
+                naudojami tik paraiškai administruoti ir susisiekti
+                su jumis dėl oficialaus narystės prašymo.
+              </p>
+
+              <button
+                id="membership-submit-button"
+                class="button button-primary registration-submit-button"
+                type="submit"
+              >
+                Pateikti narystės paraišką
+              </button>
+
+              <p
+                id="membership-form-message"
+                class="registration-form-message"
+                aria-live="polite"
+              ></p>
+
+            </form>
+
+            <iframe
+              id="membership-response-frame"
+              name="membership-response-frame"
+              title="Narystės paraiškos atsakymas"
+              hidden
+            ></iframe>
+
+          </div>
 
         </div>
 
@@ -1160,9 +1457,7 @@
             <p>
               <strong>El. paštas:</strong><br>
 
-              <a
-                href="mailto:kaubariskiobendruomene@gmail.com"
-              >
+              <a href="mailto:kaubariskiobendruomene@gmail.com">
                 kaubariskiobendruomene@gmail.com
               </a>
             </p>
@@ -1239,9 +1534,7 @@
         </h2>
 
         <p>
-          <a
-            href="mailto:kaubariskiobendruomene@gmail.com"
-          >
+          <a href="mailto:kaubariskiobendruomene@gmail.com">
             kaubariskiobendruomene@gmail.com
           </a>
         </p>
